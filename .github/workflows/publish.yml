@@ -45,6 +45,15 @@ jobs:
           node-version: '24'
           registry-url: 'https://registry.npmjs.org'
 
+      # OIDC-рукопожатие с реестром умеет только npm 11.5.1 и новее. На старом
+      # клиенте registry считает публикатора анонимом и отвечает 404 на PUT,
+      # хотя provenance к тому моменту уже подписан локально.
+      - name: Upgrade npm and show versions
+        run: |
+          npm install -g npm@latest
+          node --version
+          npm --version
+
       - name: Syntax check the loader
         run: node --check widget.js
 
