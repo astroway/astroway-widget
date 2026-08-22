@@ -1,0 +1,67 @@
+name: Publish @astroway/widget
+
+# Trusted Publishing via npm OIDC: никаких долгоживущих токенов в секретах.
+# npm криптографически проверяет, что запрос на публикацию пришёл именно из
+# этого workflow в этом репозитории.
+#
+# Разовая настройка на стороне npm
+# (https://www.npmjs.com/package/@astroway/widget/access):
+#   Trusted Publishers -> Add -> Provider: GitHub Actions
+#     Repository:        astroway/astroway-widget
+#     Workflow filename: publish.yml
+#     Environment:       (оставить пустым)
+#
+# Релиз:
+#   npm version patch     # поднимает версию и ставит тег
+#   git push && git push --tags
+
+on:
+  workflow_dispatch:
+    inputs:
+      dry_run:
+        description: 'Только собрать пакет, без публикации'
+        required: false
+        type: boolean
+        default: false
+  push:
+    tags:
+      - 'v*'
+
+jobs:
+  publish:
+    name: Pack and publish
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      id-token: write   # нужен для npm OIDC и SLSA provenance
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node 24
+        uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+          registry-url: 'https://registry.npmjs.org'
+
+      - name: Syntax check the loader
+        run: node --check widget.js
+
+      - name: Show package contents
+        run: npm pack --dry-run
+
+      - name: Verify version is unpublished
+        if: ${{ !inputs.dry_run }}
+        run: |
+          NAME=$(node -p "require('./package.json').name")
+          VERSION=$(node -p "require('./package.json').version")
+          if npm view "$NAME@$VERSION" version >/dev/null 2>&1; then
+            echo "$NAME@$VERSION уже опубликован, поднимите версию"
+            exit 1
+          fi
+          echo "$NAME@$VERSION готов к публикации"
+
+      - name: Publish
+        if: ${{ !inputs.dry_run }}
+        run: npm publish --provenance --access public
