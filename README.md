@@ -48,6 +48,17 @@ Several widgets can live on one page, each with its own language and theme:
 <script src="https://app.astroway.info/widget.js" async></script>
 ```
 
+## Content Security Policy
+
+If your site sends a strict CSP, allow the loader and the iframe:
+
+```
+script-src  https://app.astroway.info;
+frame-src   https://app.astroway.info;
+```
+
+Nothing else is needed: the widget loads no third-party assets on your page, and the ephemeris files are fetched inside the iframe, on our origin.
+
 ## Attribution
 
 The widget renders a "Powered by AstroWay" line inside the iframe, but that link lives on our domain, not on yours, so search engines do not read it as a link from your site. If you want to credit the project in a way that counts, add a plain link next to the widget:
