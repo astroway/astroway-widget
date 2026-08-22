@@ -1,0 +1,18 @@
+{
+  "name": "@astroway/widget",
+  "version": "1.1.0",
+  "description": "Embeddable natal chart calculator. Swiss Ephemeris runs in the browser, no API key, no birth data sent to a server.",
+  "main": "widget.js",
+  "files": ["widget.js", "README.md", "LICENSE"],
+  "keywords": [
+    "astrology", "natal-chart", "birth-chart", "horoscope",
+    "swiss-ephemeris", "ephemeris", "widget", "embed", "astro"
+  ],
+  "homepage": "https://app.astroway.info/widget",
+  "repository": { "type": "git", "url": "git+https://github.com/astroway/astroway-widget.git" },
+  "bugs": { "url": "https://github.com/astroway/astroway-widget/issues" },
+  "license": "MIT",
+  "author": "Astroway",
+  "publishConfig": { "access": "public" },
+  "sideEffects": true
+}
