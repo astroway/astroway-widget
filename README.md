@@ -1,5 +1,8 @@
 # Astroway Natal Chart Widget
 
+[![npm](https://img.shields.io/npm/v/@astroway/widget)](https://www.npmjs.com/package/@astroway/widget)
+[![license](https://img.shields.io/npm/l/@astroway/widget)](LICENSE)
+
 Embeddable natal chart calculator for any website. One `<div>`, one `<script>`, no build step and no API key.
 
 Positions come from [Swiss Ephemeris](https://www.astro.com/swisseph/) compiled to WebAssembly and are computed **in the visitor's browser**. Birth data is never sent to a server.
